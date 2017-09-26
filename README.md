@@ -6,6 +6,7 @@ Tutorial:
 ```ShellSession
 pip3 install beautifulsoup4
 pip3 install requests
+pip3 install lxml
 
 git clone https://github.com/Talkytitan5127/YaMusic.git
 cd YaMusic
