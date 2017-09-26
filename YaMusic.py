@@ -4,8 +4,6 @@ from bs4 import BeautifulSoup
 
 import requests
 
-from multiprocessing import Pool, Process
-
 def get_html(url):
     
     r = requests.get(url)
