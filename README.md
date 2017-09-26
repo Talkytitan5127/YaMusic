@@ -5,6 +5,7 @@ It's output first 100 playlists with the biggest quantity of likes.
 Tutorial:
 ```ShellSession
 git clone https://github.com/Talkytitan5127/YaMusic.git
+cd YaMusic
 python3 YaMusic.py
 ```
 
