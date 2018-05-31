@@ -3,6 +3,9 @@
 from bs4 import BeautifulSoup
 
 import requests
+import re
+
+from multiprocessing import Pool, Process
 
 def get_html(url):
     
@@ -29,7 +32,7 @@ def get_list_names(soup):
     
     list_name = []
     for td in tds:
-        name = td.find('a').get('title')
+        name = td.find('a').text
         list_name.append(name)
 
     return list_name
@@ -41,8 +44,8 @@ def get_list_likes(soup):
 
     list_likes = []
     for td in tds:
-        like = str(td.find('span')).split('</span>')
-        list_likes.append(like[-2])
+        like = td.find('span', class_=re.compile('d-like__digits.*hard')).text
+        list_likes.append(get_int(like))
 
     return list_likes
 
@@ -52,6 +55,7 @@ def get_info_dict(links, url):
     musicDict = {}
     
     for link in links:
+        print("Process: %s" % link)
         html = get_html(url + link)
 
         soup = BeautifulSoup(html, 'lxml')
@@ -60,25 +64,30 @@ def get_info_dict(links, url):
         likes = get_list_likes(soup)
 
         for i in range(len(names)):
-            numLike = get_int(likes[i])
+            numLike = (likes[i])
             musicDict[numLike] = musicDict.get(numLike, names[i])
     
     return musicDict
 
 
 def get_int(string):
-    if len(string) > 3:
-        mas = string.split()
-        num = int(mas[0])*1000 + int(mas[1])
-        return num
-    return int(string)
+    try:
+        res = ''.join(list(filter(lambda x: x.isdigit(), string)))
+    except:
+        print("Nonetype")
+        return 0
+    if not res:
+        print("Nulltype")
+        return 0
+    return int(res)
 
 
 if __name__ == "__main__":
 
-    url = 'https://music.yandex.ru/mix/'
-    
+    url = 'https://music.yandex.ru/mix/'    
+
     html = get_html(url + 'all')
+    
     links = get_links(html)
 
     info = get_info_dict(links, url)
@@ -95,4 +104,3 @@ if __name__ == "__main__":
             print('\"\"', v, '\"\"', 'It\'s rating is', k, sep=' ', file=f)
             
             i += 1
-    
