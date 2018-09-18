@@ -4,10 +4,10 @@ It's output first 100 playlists with the biggest quantity of likes.
 
 Tutorial:
 ```ShellSession
-pip3 install -r requirements.txt
-
 git clone https://github.com/Talkytitan5127/YaMusic.git
+
 cd YaMusic
+pip3 install -r requirements.txt
 python3 YaMusic.py
 ```
 
